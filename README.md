@@ -2,7 +2,7 @@
 
 This is a **backend implementation** of the classic multiplayer card game **Raja-Mantri-Chor-Sipahi** using **Node.js** and **Express.js**.  
 The backend manages **rooms, players, roles, guesses, and scoring**. 
- 
+
 **(Successfully tested using Postman ✅✅)**
 
 ---
@@ -44,6 +44,8 @@ The backend manages **rooms, players, roles, guesses, and scoring**.
 /room/join → join a room
 
 /room/players/:roomId → see all player names
+
+/room/assign/:roomId - System - Randomly assign roles after 4 players
 
 /role/me/:roomId/:playerId → see private role
 

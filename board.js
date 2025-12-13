@@ -34,7 +34,7 @@ app.post("/room/create", (req, res) => {
 });
 
 //to join the room
-app.post("/room/join", (req, res) => {
+app.post("/room/join",(req, res) => {
 
   const {roomId, name} = req.body;
   
@@ -65,32 +65,27 @@ app.post("/room/join", (req, res) => {
 
   });
 
- // function to give rols
-  if (myroom.players.length === 4){
-     giveroles(myroom);
-
-  }
  
 
-  // find the player after giving the roles
-let currentPlayer = null;
+//   // find the player after giving the roles
+// let currentPlayer = null;
 
-for (let i = 0; i < myroom.players.length; i++) {
+// for (let i = 0; i < myroom.players.length; i++) {
 
-  if (myroom.players[i].playerId === playerId) {
+//   if (myroom.players[i].playerId === playerId) {
 
-    currentPlayer = myroom.players[i];
-     break;
-  }
-}
+//     currentPlayer = myroom.players[i];
+//      break;
+//   }
+// }
 
 
-  res.send({ playerId, message: "Joined room", role: currentPlayer ? currentPlayer.role : null });
+  res.send({ playerId, message: "Joined room"});
 
 });
 
 // All players can see all names
-app.get("/room/players/:roomId", (req,res) => {
+app.get("/room/players/:roomId",(req,res) => {
 
   const { roomId } = req.params;
 
@@ -119,8 +114,41 @@ res.send({players:names});
 
 });
 
+app.post("/room/assign/:roomId",(req,res) => {
+
+  const {roomId} = req.params;
+
+  const myroom = rooms[roomId];
+
+  // CHECKING THE RoomID
+  if(!myroom){
+    return res.send({message : "Invalid roomID"})
+  }
+
+   // Player count check
+  if (myroom.players.length !== 4) {
+    return res.send({ message: "Need exactly 4 players to assign roles" });
+  }
+
+    // TO Prevent re-assigning OF ROLES
+  if (myroom.status !== "waiting") {
+    return res.send({ message: "Roles already assigned" });
+  }
+
+
+  // function to give rols
+    giveroles(myroom);
+
+     // CHANGING THE STATUS
+      myroom.status = "assigned";
+
+  
+ 
+   res.send({message : "Roles Assigned Successfully !!"});
+});
+
 // TO see roles
-app.get("/role/me/:roomId/:playerId", (req, res) => {
+app.get("/role/me/:roomId/:playerId",(req, res) => {
 
 
   const { roomId, playerId } = req.params;
