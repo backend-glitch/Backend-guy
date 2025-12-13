@@ -45,21 +45,17 @@ https://backend-guy-1.onrender.com/
 
 ---
 ## 🔚ENDPoints
-/room/create → create a room
+|Method|Endpoint|Work|
+|------|--------|----|
+|POST| /room/create|Create a new game room|
+|POST|/room/join| Join an existing room|
+|GET|/room/players/:roomId|All players - See player names only|
+|POST| /room/assign/:roomId| System - Randomly assign roles after 4 players|
+|GET| /role/me/:roomId/:playerId|Individual - See your role only|
+|POST|/guess/:roomId|Mantri - Submit guessed playerId|
+|GET| /result/:roomId| All players - Final roles + points|
+|GET|/leaderboard/:roomId| All players NAMES and Scores in Descending order|
 
-/room/join → join a room
-
-/room/players/:roomId → see all player names
-
-/room/assign/:roomId - System - Randomly assign roles after 4 players
-
-/role/me/:roomId/:playerId → see private role
-
-/guess/:roomId → Mantri guesses Chor
-
-/result/:roomId → see results (roles + points)
-
-/leaderboard/:roomId → leaderboard
 ---
 
 ## ⚙️Tech Stack
