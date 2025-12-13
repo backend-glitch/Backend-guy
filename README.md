@@ -1,23 +1,24 @@
 #  🎮Raja-Mantri-Chor-Sipahi Backend
 
 This is a **backend implementation** of the classic multiplayer card game **Raja-Mantri-Chor-Sipahi** using **Node.js** and **Express.js**.  
-The backend manages **rooms, players, roles, guesses, and scoring**.  
-Players interact with the backend via **REST APIs** (testable using Postman).
+The backend manages **rooms, players, roles, guesses, and scoring**. 
+ 
+**(Successfully tested using Postman ✅✅)**
 
 ---
 
 ## 🧾Table of Contents
 
-- [Game Rules](game-rules)  
-- [Tech Stack](tech-stack)    
-- [API Endpoints](api-endpoints)  
+- [Game Rules](game-rules)     
+- [API Endpoints](api-endpoints) 
+- [Tech Stack](tech-stack)  
 
 ---
 
 ## 🔖Game Rules
 
 - 4 players join a room.
-- 
+
 - Roles assigned randomly:  
   - **Raja** – Observer  
   - **Mantri** – Must guess the Chor  
@@ -38,15 +39,19 @@ Players interact with the backend via **REST APIs** (testable using Postman).
 
 ---
 ## 🔚ENDPoints
-Create Room → POST /room/create
+/room/create → create a room
 
-Join Room → POST /room/join 4 times 
+/room/join → join a room
 
-Check Private Role → GET /room/:roomId/role/:playerId
+/room/players/:roomId → see all player names
 
-Mantri Guess → POST /room/:roomId/guess
+/role/me/:roomId/:playerId → see private role
 
-Get Results → GET /room/:roomId/results
+/guess/:roomId → Mantri guesses Chor
+
+/result/:roomId → see results (roles + points)
+
+/leaderboard/:roomId → leaderboard
 ---
 
 ## ⚙️Tech Stack

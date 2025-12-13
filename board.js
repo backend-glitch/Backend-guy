@@ -2,143 +2,306 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
-let rooms = {}; // all rooms stored in memory
 
-// POINTS
-const BASE_POINTS = {
-  Raja: 1000,
-  Mantri: 800,
-  Sipahi: 500,
-  Chor: 0
-};
+ // all rooms are stored in it
+let rooms = {};
 
-// 1️⃣ CREATE ROOM
+// To check the server
+
+app.get("/",(req,res) =>{
+
+ res.send( "Server is Running Successfully 👍!!" );
+
+
+});
+
+
+// Create the room
 app.post("/room/create", (req, res) => {
-  const roomId = Math.random().toString(36).substring(2, 7).toUpperCase();
 
+  // creating a random alphanumeric roomID
+  const roomId = Math.random().toString(36).substring(1, 10);
+
+  // DESIGNING the room structure
   rooms[roomId] = {
     players: [],
     status: "waiting",
     mantriGuess: null
+
   };
 
   res.send({ roomId });
 });
 
-//TO JOIN
+//to join the room
 app.post("/room/join", (req, res) => {
-  const { roomId, playerName } = req.body;
-  const room = rooms[roomId];
 
-  if (!room) return res.status(404).send({ error: "Room not found" });
-  if (room.players.length >= 4) return res.status(400).send({ error: "Room full" });
+  const {roomId, name} = req.body;
+  
 
-  const playerId = Math.random().toString(36).substring(2, 10);
+  const myroom = rooms[roomId];
 
-  room.players.push({
-    playerId,
-    name: playerName,
+  // checking the roomID
+  if (!myroom){
+   return res.send({ message : "Room not found" });
+  }
+
+// Checking for 4 players
+  if (myroom.players.length >= 4){
+     return res.send({ error: "Room full" });
+  }
+
+
+ // generating random player ID
+  const playerId = Math.random().toString(36).substring(1, 10);
+
+  //Designing the players list structure
+  myroom.players.push({
+
+    playerId: playerId,
+    name: name,
     role: null,
     points: 0
+
   });
 
-  // if 4 players → assign roles
-  if (room.players.length === 4) assignRoles(room);
+ // function to give rols
+  if (myroom.players.length === 4){
+     giveroles(myroom);
 
-  // Find the current player in room (fixed)
-  const currentPlayer = room.players.find(p => p.playerId === playerId);
+  }
+ 
 
-  res.send({ playerId, message: "Joined room", role: currentPlayer.role });
+  // find the player after giving the roles
+let currentPlayer = null;
+
+for (let i = 0; i < myroom.players.length; i++) {
+
+  if (myroom.players[i].playerId === playerId) {
+
+    currentPlayer = myroom.players[i];
+     break;
+  }
+}
+
+
+  res.send({ playerId, message: "Joined room", role: currentPlayer ? currentPlayer.role : null });
+
 });
 
+// All players can see all names
+app.get("/room/players/:roomId", (req,res) => {
 
-// 3️⃣ GET PRIVATE ROLE
-app.get("/room/:roomId/role/:playerId", (req, res) => {
+  const { roomId } = req.params;
+
+  const myroom = rooms[roomId];
+
+  // checking the roomID
+ if (!myroom) {
+    return res.send({ message: "Room id is invalid !!" });
+  }
+
+//   for (let i = 0; i < myroom.players.length; i++) {
+
+//   if (myroom.players[i].playerId === playerId) {
+
+//     names[i] = myroom.players[i];
+//      break;
+//   }
+// }
+
+// getting the players names linewise
+  const names = myroom.players.map(p => p.name);
+
+
+res.send({players:names});
+
+
+});
+
+// TO see roles
+app.get("/role/me/:roomId/:playerId", (req, res) => {
+
+
   const { roomId, playerId } = req.params;
 
   const room = rooms[roomId];
-  if (!room) return res.status(404).send({ error: "Room not found" });
 
-  const player = room.players.find(p => p.playerId === playerId);
-  if (!player) return res.status(404).send({ error: "Player not found" });
+  // checking roomid
+  if (!room) {
+    return res.send({ message: "Incorrect room id" });
+  }
 
-  res.send({ role: player.role });
-});
+ 
+  // finding the players with that role
+let player = null;
 
-// 4️⃣ MANTRI GUESS
-app.post("/room/:roomId/guess", (req, res) => {
-  const { roomId } = req.params;
-  const { mantriId, chorId } = req.body;
+for (let i = 0; i < room.players.length; i++) {
 
-  const room = rooms[roomId];
-  if (!room) return res.status(404).send({ error: "Room not found" });
+  if (room.players[i].playerId === playerId) {
 
-  const mantri = room.players.find(p => p.role === "Mantri");
-
-  if (!mantri || mantri.playerId !== mantriId)
-    return res.status(400).send({ error: "You are not the Mantri" });
-
-  room.mantriGuess = chorId;
-  room.status = "guessed";
-
-  res.send({ message: "Guess received" });
-});
-
-// 5️⃣ RESULTS
-app.get("/room/:roomId/results", (req, res) => {
-  const { roomId } = req.params;
-  const room = rooms[roomId];
-
-  if (!room) return res.status(404).send({ error: "Room not found" });
-
-  calculatePoints(room);
-
-  res.send({
-    roles: Object.fromEntries(room.players.map(p => [p.name, p.role])),
-    points: Object.fromEntries(room.players.map(p => [p.name, p.points]))
-  });
-});
-
-
-// --------------------------------------
-// FUNCTIONS
-// --------------------------------------
-
-function assignRoles(room) {
-  let roles = ["Raja", "Mantri", "Sipahi", "Chor"];
-  roles.sort(() => Math.random() - 0.5);
-
-  room.players.forEach((player, index) => {
-    player.role = roles[index];
-  });
-
-  room.status = "roles_assigned";
+    player = room.players[i];
+     break;
+  }
 }
 
+// checking the id
+  if (!player) {
+    return res.send({ message: "Incorrect player id" });
+  }
+
+  res.send({name: player.name,role: player.role});
+
+});
+
+// Mantri guessing chor id
+
+app.post("/guess/:roomId", (req, res) => {
+
+
+  const { roomId } = req.params;
+
+  const { mantriId, chorId } = req.body;
+
+  const myroom = rooms[roomId];
+
+ // ckecking id
+  if (!myroom) {
+    return res.send({ message: "Room not found" });
+  }
+
+  // finding the player with role of mantri
+  const mantri = myroom.players.find(x => x.role === "Mantri");
+
+  if (mantri.playerId !== mantriId){
+
+    return res.send({ message: "You are not the Mantri" });
+  }
+
+  // stroing the guess
+  myroom.mantriGuess = chorId;
+
+  // updating the status
+  myroom.status = "guessed";
+
+  res.send({ message: "!! Mantri has done the Guess !!" });
+
+});
+
+//RESULTS
+
+app.get("/result/:roomId", (req, res) => {
+
+  const { roomId } = req.params;
+
+
+  const myroom = rooms[roomId];
+
+  //checking roomID
+  if (!myroom) {
+    return res.send({ message: "Room not found" });
+  }
+
+  // calculating the points
+  calculatePoints(myroom);
+  
+  const roles = {};
+  const pts = {};
+
+  // Mapping names with roles and pts
+  myroom.players.forEach((p) => {
+   
+    roles[p.name] = p.role;
+    pts[p.name] = p.points;
+
+  });
+ 
+  res.send({ roles, pts}); 
+
+});
+
+//displaying the Leaderboard
+
+app.get("/leaderboard/:roomId", (req,res) =>{
+
+  const {roomId} = req.params;
+
+  const myroom = rooms[roomId];
+
+  // checking the rromID
+  if(!myroom){
+    return res.send({ message: "invalid room  ID !!"});
+  }
+
+  // FINDING THE names and pts and mapping them
+  const board  = myroom.players.map(p => ({
+     
+    name: p.name,
+    score: p.points
+
+  }));
+
+  // to sort by descending
+    board.sort((a, b) => b.score - a.score);
+
+  res.send({ leaderboard : board });
+
+});
+
+
+function giveroles(room) {
+
+  let roles = ["Raja", "Mantri", "Sipahi", "Chor"];
+
+  // sort logic
+  roles.sort(() => Math.random() - 0.5);
+
+  //mapping random roles with players
+  room.players.forEach((player, index) => {
+  
+    player.role = roles[index];
+
+  });
+
+ 
+}
+
+//calculation of pts
 function calculatePoints(room) {
   const mantri = room.players.find(p => p.role === "Mantri");
   const chor = room.players.find(p => p.role === "Chor");
   const sipahi = room.players.find(p => p.role === "Sipahi");
   const raja = room.players.find(p => p.role === "Raja");
 
-  // Default Raja score
+  //default
   raja.points = 1000;
 
   if (room.mantriGuess === chor.playerId) {
-    // Mantri correct
+
+
+    // Correct guess
     mantri.points = 800;
     sipahi.points = 500;
     chor.points = 0;
   } else {
-    // Mantri wrong → Chor steals
+
+
+    // Wrong guess
     mantri.points = 0;
     sipahi.points = 0;
-    chor.points = 800 + 500;
+    chor.points = 1300;
   }
 
   room.status = "completed";
+
 }
 
-// --------------------------------------
+ // server
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+ app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+
+
+//app.listen(process.env.PORT || 3000);
+
+
+// THE END
