@@ -20,7 +20,7 @@ app.get("/",(req,res) =>{
 app.post("/room/create", (req, res) => {
 
   // creating a random alphanumeric roomID
-  const roomId = Math.random().toString(36).substring(1, 10);
+  const roomId =  Math.floor(100000 + Math.random() * 900000).toString();
 
   // DESIGNING the room structure
   rooms[roomId] = {
@@ -53,7 +53,7 @@ app.post("/room/join",(req, res) => {
 
 
  // generating random player ID
-  const playerId = Math.random().toString(36).substring(1, 10);
+  const playerId =  Math.floor(100000 + Math.random() * 900000).toString();
 
   //Designing the players list structure
   myroom.players.push({
@@ -79,8 +79,9 @@ app.post("/room/join",(req, res) => {
 //   }
 // }
 
+  const curr_player = myroom.players.find(p => p.playerId === playerId);
 
-  res.send({ playerId, message: "Joined room"});
+  res.send({ name: curr_player.name, playerId:playerId, message: "Joined room"});
 
 });
 
@@ -198,6 +199,10 @@ app.post("/guess/:roomId", (req, res) => {
     return res.send({ message: "Room not found" });
   }
 
+  if (myroom.status !== "assigned") {
+  return res.send({ message: "Roles not assigned yet" });
+}
+
   // finding the player with role of mantri
   const mantri = myroom.players.find(x => x.role === "Mantri");
 
@@ -230,6 +235,10 @@ app.get("/result/:roomId", (req, res) => {
     return res.send({ message: "Room not found" });
   }
 
+  if (myroom.status !== "guessed") {
+  return res.send({ message: "Guess not completed yet" });
+}
+
   // calculating the points
   calculatePoints(myroom);
   
@@ -243,7 +252,7 @@ app.get("/result/:roomId", (req, res) => {
     pts[p.name] = p.points;
 
   });
- 
+
   res.send({ roles, pts}); 
 
 });

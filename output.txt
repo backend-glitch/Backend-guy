@@ -1,0 +1,147 @@
+// Successfully executed in Postman..
+
+
+// creating the room :  http://localhost:3000/room/create
+{   
+ "roomId": "386216"
+}
+
+
+// joining the room  :  http://localhost:3000/room/join
+
+JSON:
+{
+   "roomId": "386216",
+    "name": "Arjun"
+}
+
+
+
+
+//player 1
+
+{
+    "name": "Arjun",
+    "playerId": "654696",
+    "message": "Joined room"
+}
+
+
+//player 2
+{
+    "name": "Aman",
+    "playerId": "248337",
+    "message": "Joined room"
+}
+
+
+//player 3
+{
+    "name": "Anya",
+    "playerId": "829621",
+    "message": "Joined room"
+}
+
+
+//player 4
+{
+    "name": "Ananya",
+    "playerId": "639139",
+    "message": "Joined room"
+}
+
+
+
+
+//getting all players name : http://localhost:3000/room/players/386216
+
+{
+    "players": [
+        "Arjun",
+        "Aman",
+        "Anya",
+        "Avni"
+    ]
+}
+
+
+
+
+//assigning the roles :   http://localhost:3000/room/assign/386216
+
+
+{
+    "message": "Roles Assigned Successfully !!"
+}
+
+
+
+// To get the role privately :   http://localhost:3000/role/me/386216/248337
+{
+    "name": "Aman",
+    "role": "Chor"
+}
+
+
+
+
+{
+    "name": "Arjun",
+    "role": "Mantri"
+}
+
+
+// Mantri will guess :  http://localhost:3000/guess/386216
+JSON: 
+{
+   "mantriId": "654696",
+    "chorId": "248337"
+}
+
+
+
+{
+    "message": "!! Mantri has done the Guess !!"
+}
+
+
+// showing results : http://localhost:3000/result/386216
+{
+    "roles": {
+        "Arjun": "Mantri",
+        "Aman": "Chor",
+        "Anya": "Sipahi",
+        "Ananya": "Raja"
+    },
+    "pts": {
+        "Arjun": 800,
+        "Aman": 0,
+        "Anya": 500,
+        "Ananya": 1000
+    }
+}
+
+
+
+//getting leaderboard : http://localhost:3000/leaderboard/386216
+
+{
+    "leaderboard": [
+        {
+            "name": "Ananya",
+            "score": 1000
+        },
+        {
+            "name": "Arjun",
+            "score": 800
+        },
+        {
+            "name": "Anya",
+            "score": 500
+        },
+        {
+            "name": "Aman",
+            "score": 0
+        }
+    ]
+}
