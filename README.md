@@ -16,8 +16,8 @@ https://backend-guy-1.onrender.com/
 ## 🧾Table of Contents
 
 - [Game Rules](#game-rules)     
-- [API Endpoints](#api-endpoints) 
-- [Tech Stack](#tech-stack)  
+- [API Endpoints](#ENDPoints) 
+- [Tech Stack](#Tech-Stack)  
 
 ---
 
@@ -58,7 +58,7 @@ https://backend-guy-1.onrender.com/
 
 ---
 
-## ⚙️Tech Stack
+## ⚙️Tech-Stack
 
 - Node.js  
 - Express.js  
