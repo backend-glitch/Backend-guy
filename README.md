@@ -65,4 +65,8 @@ https://backend-guy-1.onrender.com/
 - In-memory storage (no database)
 
 ---
+## 😁About Me
+<img src="https://gitstar-xcj1.vercel.app/github?user=backend-glitch&emoji=🚀">
+
+---
 ARJUN 💚 BACKEND 🧡 2025
