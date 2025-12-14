@@ -17,7 +17,9 @@ https://backend-guy-1.onrender.com/
 
 - [Game Rules](#game-rules)     
 - [API Endpoints](#ENDPoints) 
-- [Tech Stack](#Tech-Stack)  
+- [Tech Stack](#Tech-Stack)
+- [Collaborations](#Collaborations)
+- [About-Me](#About-Me)
 
 ---
 
@@ -79,7 +81,7 @@ If you like this project:
 🍴 Fork it
 
 ---
-## 😁About Me
+## 😁About-Me
 <img src="https://gitstar-xcj1.vercel.app/github?user=backend-glitch&emoji=🚀">
 
 ---
