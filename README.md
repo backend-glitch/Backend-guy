@@ -69,7 +69,7 @@ https://backend-guy-1.onrender.com/
 ---
 
 ## 👨‍💻 Collaborations
- For collaboration on frontend projects : you can send me a pull request on my REPO 🎯 :
+ For collaboration on backend projects : you can send me a pull request on my REPO 🎯 :
  ```md
  https://github.com/backend-glitch/CHIT_AND_CHAT
 ```
