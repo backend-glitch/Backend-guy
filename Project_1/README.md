@@ -15,11 +15,9 @@ https://backend-guy-1.onrender.com/
 
 ## 🧾Table of Contents
 
-- [Game Rules](#game-rules)     
-- [API Endpoints](#ENDPoints) 
-- [Tech Stack](#Tech-Stack)
-- [Collaborations](#Collaborations)
-- [About-Me](#About-Me)
+- [Game Rules](game-rules)     
+- [API Endpoints](api-endpoints) 
+- [Tech Stack](tech-stack)  
 
 ---
 
@@ -60,29 +58,11 @@ https://backend-guy-1.onrender.com/
 
 ---
 
-## ⚙️Tech-Stack
+## ⚙️Tech Stack
 
 - Node.js  
 - Express.js  
 - In-memory storage (no database)
-
----
-
-## 👨‍💻 Collaborations
- For collaboration on backend projects : you can send me a pull request on my REPO 🎯 :
- ```md
- https://github.com/backend-glitch/CHIT_AND_CHAT
-```
-
-If you like this project:
-
-⭐ Star this repo
-
-🍴 Fork it
-
----
-## 😁About-Me
-<img src="https://gitstar-xcj1.vercel.app/github?user=backend-glitch&emoji=🚀">
 
 ---
 ARJUN 💚 BACKEND 🧡 2025
