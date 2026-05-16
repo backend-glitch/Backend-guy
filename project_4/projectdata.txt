@@ -1,0 +1,36 @@
+server/
+│
+├── src/
+│   ├── config/
+│   │   └── db.js
+│   │
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   └── post.controller.js
+│   │
+│   ├── middleware/
+│   │   ├── auth.middleware.js
+│   │   ├── error.middleware.js
+│   │   └── validate.middleware.js
+│   │
+│   ├── models/
+│   │   ├── User.js
+│   │   └── Post.js
+│   │
+│   ├── routes/
+│   │   ├── auth.routes.js
+│   │   └── post.routes.js
+│   │
+│   ├── services/
+│   │   └── post.service.js
+│   │
+│   ├── utils/
+│   │   ├── generateToken.js
+│   │   └── ApiError.js
+│   │
+│   ├── app.js
+│   └── server.js
+│
+├── .env
+├── package.json
+└── README.md
